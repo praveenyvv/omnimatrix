@@ -258,6 +258,7 @@ nav {
   cursor: pointer;
   padding: 0;
   z-index: 1001;
+  margin-left: auto;
 }
 
 .mobile-menu-btn .bar {
@@ -1453,6 +1454,11 @@ footer {
 
   .mobile-menu-btn {
     display: flex;
+    margin-left: auto;
+  }
+
+  nav {
+    display: contents;
   }
 
   .logo-link img {
