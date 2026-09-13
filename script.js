@@ -46,8 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.overflow = isOpen ? 'hidden' : '';
         });
 
+        // Dropdown toggle on mobile
+        document.querySelectorAll('.nav-dropdown-trigger').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const parent = trigger.closest('.nav-dropdown-item');
+                    if (parent) {
+                        parent.classList.toggle('open');
+                    }
+                }
+            });
+        });
+
         // Close on link click
-        navLinks.querySelectorAll('a').forEach(link => {
+        navLinks.querySelectorAll('a:not(.nav-dropdown-trigger)').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
                 mobileMenuBtn.classList.remove('active');
