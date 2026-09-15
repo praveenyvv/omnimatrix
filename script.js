@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const sectionHeight = current.offsetHeight;
             const sectionTop = current.offsetTop;
             const sectionId = current.getAttribute('id');
-            const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
+            const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]:not(.nav-cta)`);
             
             if (navLink) {
                 if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
@@ -165,10 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setupLightbox();
 });
 
-// Lightbox helper function
+// 7. Lightbox Setup for Galleries with Multi-Image Slider & Touch Support
 function setupLightbox() {
-    const galleryItems = document.querySelectorAll('.gallery-card img, .gallery img');
-    if (!galleryItems.length) return;
+    const galleryCards = document.querySelectorAll('.gallery-card');
+    if (!galleryCards.length) return;
 
     let lightbox = document.querySelector('.lightbox-modal');
     if (!lightbox) {
@@ -177,27 +177,37 @@ function setupLightbox() {
         lightbox.innerHTML = `
             <button class="lightbox-close" aria-label="Close Lightbox">&times;</button>
             <button class="lightbox-prev" aria-label="Previous Image">&#10094;</button>
-            <img src="" alt="Expanded View" id="lightbox-img">
+            <div class="lightbox-content-wrap">
+                <img src="" alt="Expanded Tooling View" id="lightbox-img">
+                <div class="lightbox-caption" id="lightbox-caption"></div>
+            </div>
             <button class="lightbox-next" aria-label="Next Image">&#10095;</button>
         `;
         document.body.appendChild(lightbox);
     }
 
     const lightboxImg = lightbox.querySelector('#lightbox-img');
+    const lightboxCaption = lightbox.querySelector('#lightbox-caption');
     const closeBtn = lightbox.querySelector('.lightbox-close');
     const prevBtn = lightbox.querySelector('.lightbox-prev');
     const nextBtn = lightbox.querySelector('.lightbox-next');
     let currentIndex = 0;
 
-    const imagesArray = Array.from(galleryItems);
+    const cardsArray = Array.from(galleryCards);
 
     function showImage(index) {
-        currentIndex = (index + imagesArray.length) % imagesArray.length;
-        lightboxImg.src = imagesArray[currentIndex].src;
+        currentIndex = (index + cardsArray.length) % cardsArray.length;
+        const targetImg = cardsArray[currentIndex].querySelector('img');
+        if (targetImg) {
+            lightboxImg.src = targetImg.src;
+            const captionText = targetImg.getAttribute('alt') || 'Precision Tooling Component';
+            lightboxCaption.textContent = `[${currentIndex + 1} / ${cardsArray.length}]  ${captionText}`;
+        }
     }
 
-    imagesArray.forEach((img, idx) => {
-        img.addEventListener('click', () => {
+    cardsArray.forEach((card, idx) => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
             showImage(idx);
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -210,11 +220,17 @@ function setupLightbox() {
     };
 
     closeBtn.addEventListener('click', closeLightbox);
-    prevBtn.addEventListener('click', () => showImage(currentIndex - 1));
-    nextBtn.addEventListener('click', () => showImage(currentIndex + 1));
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showImage(currentIndex - 1);
+    });
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showImage(currentIndex + 1);
+    });
 
     lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
+        if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrap')) {
             closeLightbox();
         }
     });
@@ -225,4 +241,24 @@ function setupLightbox() {
         if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
         if (e.key === 'ArrowRight') showImage(currentIndex + 1);
     });
+
+    // Touch Swipe Support for Mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 45) {
+            if (diff > 0) {
+                showImage(currentIndex - 1); // Swiped right -> previous
+            } else {
+                showImage(currentIndex + 1); // Swiped left -> next
+            }
+        }
+    }, { passive: true });
 }
