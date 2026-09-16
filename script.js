@@ -179,7 +179,6 @@ function setupLightbox() {
             <button class="lightbox-prev" aria-label="Previous Image">&#10094;</button>
             <div class="lightbox-content-wrap">
                 <img src="" alt="Expanded Tooling View" id="lightbox-img">
-                <div class="lightbox-caption" id="lightbox-caption"></div>
             </div>
             <button class="lightbox-next" aria-label="Next Image">&#10095;</button>
         `;
@@ -187,7 +186,6 @@ function setupLightbox() {
     }
 
     const lightboxImg = lightbox.querySelector('#lightbox-img');
-    const lightboxCaption = lightbox.querySelector('#lightbox-caption');
     const closeBtn = lightbox.querySelector('.lightbox-close');
     const prevBtn = lightbox.querySelector('.lightbox-prev');
     const nextBtn = lightbox.querySelector('.lightbox-next');
@@ -200,8 +198,6 @@ function setupLightbox() {
         const targetImg = cardsArray[currentIndex].querySelector('img');
         if (targetImg) {
             lightboxImg.src = targetImg.src;
-            const captionText = targetImg.getAttribute('alt') || 'Precision Tooling Component';
-            lightboxCaption.textContent = `[${currentIndex + 1} / ${cardsArray.length}]  ${captionText}`;
         }
     }
 
