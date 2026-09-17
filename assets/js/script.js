@@ -166,10 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 7. Lightbox Setup for Galleries with Multi-Image Slider & Touch Support
-function setupLightbox() {
-    const galleryCards = document.querySelectorAll('.gallery-card');
-    if (!galleryCards.length) return;
+let lightboxInitialized = false;
+let activeGalleryCards = [];
+let currentIndex = 0;
 
+function setupLightbox() {
     let lightbox = document.querySelector('.lightbox-modal');
     if (!lightbox) {
         lightbox = document.createElement('div');
@@ -189,103 +190,134 @@ function setupLightbox() {
     const closeBtn = lightbox.querySelector('.lightbox-close');
     const prevBtn = lightbox.querySelector('.lightbox-prev');
     const nextBtn = lightbox.querySelector('.lightbox-next');
-    let currentIndex = 0;
 
-    const cardsArray = Array.from(galleryCards);
+    // Auto-skip if an image in the lightbox fails to load
+    lightboxImg.onerror = function() {
+        if (activeGalleryCards.length > 1) {
+            // Remove the broken card reference from active array
+            activeGalleryCards.splice(currentIndex, 1);
+            if (activeGalleryCards.length > 0) {
+                currentIndex = currentIndex % activeGalleryCards.length;
+                showImage(currentIndex);
+            } else {
+                closeLightbox();
+            }
+        } else {
+            closeLightbox();
+        }
+    };
 
     function showImage(index) {
-        currentIndex = (index + cardsArray.length) % cardsArray.length;
-        const targetImg = cardsArray[currentIndex].querySelector('img');
-        if (targetImg) {
+        if (!activeGalleryCards.length) {
+            closeLightbox();
+            return;
+        }
+        currentIndex = (index + activeGalleryCards.length) % activeGalleryCards.length;
+        const targetImg = activeGalleryCards[currentIndex].querySelector('img');
+        if (targetImg && targetImg.src) {
             lightboxImg.src = targetImg.src;
         }
     }
 
-    cardsArray.forEach((card, idx) => {
+    const closeLightbox = () => {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+        document.body.style.overflow = '';
+    };
+
+    // Attach click listeners to cards (only once per card)
+    document.querySelectorAll('.gallery-card').forEach(card => {
+        if (card.dataset.lightboxBound) return;
+        card.dataset.lightboxBound = 'true';
+
         card.addEventListener('click', (e) => {
             e.preventDefault();
-            showImage(idx);
+            // Collect all currently valid cards across the entire page in sequence
+            activeGalleryCards = Array.from(document.querySelectorAll('.gallery-card')).filter(c => {
+                const img = c.querySelector('img');
+                return img && img.naturalWidth !== 0 && c.isConnected;
+            });
+
+            if (!activeGalleryCards.length) {
+                activeGalleryCards = Array.from(document.querySelectorAll('.gallery-card'));
+            }
+
+            const currentIdx = activeGalleryCards.indexOf(card);
+            showImage(currentIdx >= 0 ? currentIdx : 0);
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
     });
 
-    const closeLightbox = () => {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-    };
+    if (!lightboxInitialized) {
+        lightboxInitialized = true;
 
-    closeBtn.addEventListener('click', closeLightbox);
-    prevBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showImage(currentIndex - 1);
-    });
-    nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showImage(currentIndex + 1);
-    });
+        closeBtn.addEventListener('click', closeLightbox);
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showImage(currentIndex - 1);
+        });
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showImage(currentIndex + 1);
+        });
 
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrap')) {
-            closeLightbox();
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (!lightbox.classList.contains('active')) return;
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
-        if (e.key === 'ArrowRight') showImage(currentIndex + 1);
-    });
-
-    // Touch Swipe Support for Mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    lightbox.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    lightbox.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        const diff = touchEndX - touchStartX;
-        if (Math.abs(diff) > 45) {
-            if (diff > 0) {
-                showImage(currentIndex - 1); // Swiped right -> previous
-            } else {
-                showImage(currentIndex + 1); // Swiped left -> next
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrap')) {
+                closeLightbox();
             }
-        }
-    }, { passive: true });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+            if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+        });
+
+        // Touch Swipe Support for Mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        lightbox.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        lightbox.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchEndX - touchStartX;
+            if (Math.abs(diff) > 45) {
+                if (diff > 0) {
+                    showImage(currentIndex - 1); // Swiped right -> previous
+                } else {
+                    showImage(currentIndex + 1); // Swiped left -> next
+                }
+            }
+        }, { passive: true });
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 8. Dynamic Gallery Loader
-//    Reads window.GALLERY_MANIFEST (set by gallery-data.js) and builds
-//    gallery cards from whatever images are in the website-assets/ folders.
-//    To add/remove images: edit the folder, run refresh_gallery.py, done.
+// 8. Dynamic Gallery Loader (Option B - Auto-Scan Support)
+//    1. Attempts to fetch live folder contents from api/gallery.php
+//       (Runs automatically on GoDaddy or local dev server)
+//    2. Falls back to window.GALLERY_MANIFEST if offline / static
 // ─────────────────────────────────────────────────────────────────────────────
-function renderDynamicGalleries() {
-    var galleryContainers = document.querySelectorAll('.gallery-grid[data-gallery]');
+function populateGalleries(manifest) {
+    const galleryContainers = document.querySelectorAll('.gallery-grid[data-gallery]');
     if (!galleryContainers.length) return;
 
-    var manifest = window.GALLERY_MANIFEST;
-    if (!manifest) {
-        console.warn('GALLERY_MANIFEST not found. Make sure gallery-data.js is included before script.js.');
-        return;
-    }
-
     galleryContainers.forEach(function(container) {
-        var key = container.getAttribute('data-gallery');
-        var images = manifest[key];
+        const key = container.getAttribute('data-gallery');
+        const images = manifest[key];
         if (!images || !images.length) {
             container.innerHTML = '<p style="color:#94a3b8;text-align:center;padding:40px 0;grid-column:1/-1;">No images in this gallery yet.</p>';
             return;
         }
-        var html = '';
+        let html = '';
         images.forEach(function(src) {
-            var filename = src.split('/').pop().split('?')[0];
-            var alt = filename
+            const filename = src.split('/').pop().split('?')[0];
+            const alt = filename
                 .replace(/^\d+-/, '')
                 .replace(/\.(jpg|jpeg|png|webp|gif)$/i, '')
                 .replace(/-/g, ' ')
@@ -298,15 +330,44 @@ function renderDynamicGalleries() {
         container.innerHTML = html;
     });
 
-    // Re-init lightbox after dynamic cards are inserted
+    // Initialize lightbox on dynamic cards
     setupLightbox();
 }
 
-// Run immediately if GALLERY_MANIFEST is already loaded,
-// otherwise wait for gallery-data.js to finish loading
-if (window.GALLERY_MANIFEST) {
-    renderDynamicGalleries();
-} else {
-    window.addEventListener('load', renderDynamicGalleries);
+function renderDynamicGalleries() {
+    const galleryContainers = document.querySelectorAll('.gallery-grid[data-gallery]');
+    if (!galleryContainers.length) return;
+
+    // Detect endpoint path based on whether page is in root or in /pages/
+    const isSubPage = window.location.pathname.includes('/pages/') || !document.querySelector('link[href*="assets/css"]');
+    const apiEndpoint = isSubPage ? '../api/gallery.php' : 'api/gallery.php';
+
+    // 1. Try Live Server Scan (GoDaddy PHP / Local Dev Server)
+    fetch(apiEndpoint, { cache: 'no-store' })
+        .then(res => {
+            if (!res.ok) throw new Error('API not available');
+            return res.json();
+        })
+        .then(liveManifest => {
+            window.GALLERY_MANIFEST = liveManifest;
+            populateGalleries(liveManifest);
+        })
+        .catch(() => {
+            // 2. Fallback to pre-generated static manifest
+            if (window.GALLERY_MANIFEST) {
+                populateGalleries(window.GALLERY_MANIFEST);
+            } else {
+                window.addEventListener('load', () => {
+                    if (window.GALLERY_MANIFEST) populateGalleries(window.GALLERY_MANIFEST);
+                });
+            }
+        });
 }
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderDynamicGalleries);
+} else {
+    renderDynamicGalleries();
+}
+
 
