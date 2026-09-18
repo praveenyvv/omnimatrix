@@ -1,0 +1,40 @@
+name: Auto Sync Gallery on Push
+
+on:
+  push:
+    paths:
+      - 'website-assets/**'
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  sync-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Gallery Refresh Script
+        run: |
+          python tools/refresh_gallery.py
+
+      - name: Commit and push updated gallery-data.js
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/js/gallery-data.js gallery-manifest.json
+          if git diff --staged --quiet; then
+            echo "No gallery changes detected."
+          else
+            git commit -m "🤖 Auto-sync gallery manifest [skip ci]"
+            git push
+          fi
