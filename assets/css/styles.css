@@ -6,23 +6,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Brand Color Palette - Aligned with OmniMatrix Official Logo */
-  --primary-dark: #0a0624;
-  --primary-navy: #140d40;
-  --navy-surface: #1b1252;
-  --navy-card: #221865;
-  --blue-primary: #0284c7;
-  --blue-vibrant: #0ea5e9;
-  --blue-hover: #0369a1;
-  --blue-light: #38bdf8;
-  --cyan-accent: #00d2ff;
-  --cyan-glow: rgba(0, 210, 255, 0.35);
+  /* Brand Color Palette - 100% Harmonized with 2026 OmniMatrix Official Logo */
+  --primary-dark: #070a26;
+  --primary-navy: #0b0f3e;
+  --navy-surface: #111752;
+  --navy-card: #19206b;
+  --blue-primary: #3361e2;
+  --blue-vibrant: #4872f8;
+  --blue-hover: #224ec9;
+  --blue-light: #6088fa;
+  --cyan-accent: #60a5fa;
+  --cyan-glow: rgba(51, 97, 226, 0.35);
 
   /* Neutrals */
   --bg-body: #f8fafc;
   --bg-card: #ffffff;
-  --bg-subtle: #f0f4f8;
-  --bg-dark-section: #0c072b;
+  --bg-subtle: #f0f4f9;
+  --bg-dark-section: #090c2e;
   
   /* Text Colors */
   --text-main: #0f172a;
@@ -34,9 +34,9 @@
   --border-light: #e2e8f0;
   --border-subtle: #f1f5f9;
   --border-glass: rgba(255, 255, 255, 0.12);
-  --shadow-sm: 0 2px 8px rgba(20, 13, 64, 0.05);
-  --shadow-md: 0 10px 25px -5px rgba(20, 13, 64, 0.08), 0 8px 10px -6px rgba(20, 13, 64, 0.04);
-  --shadow-lg: 0 20px 35px -10px rgba(20, 13, 64, 0.15), 0 10px 15px -5px rgba(20, 13, 64, 0.05);
+  --shadow-sm: 0 2px 8px rgba(11, 15, 62, 0.05);
+  --shadow-md: 0 10px 25px -5px rgba(11, 15, 62, 0.08), 0 8px 10px -6px rgba(11, 15, 62, 0.04);
+  --shadow-lg: 0 20px 35px -10px rgba(11, 15, 62, 0.15), 0 10px 15px -5px rgba(11, 15, 62, 0.05);
   
   /* Layout & Spacing */
   --container-max: 1280px;
@@ -112,9 +112,9 @@ ul {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(2, 132, 199, 0.08);
+  background: rgba(51, 97, 226, 0.08);
   color: var(--blue-primary);
-  border: 1px solid rgba(2, 132, 199, 0.25);
+  border: 1px solid rgba(51, 97, 226, 0.25);
   padding: 6px 16px;
   border-radius: var(--radius-full);
   font-size: 0.85rem;
@@ -125,9 +125,9 @@ ul {
 }
 
 .section-badge.dark {
-  background: rgba(0, 210, 255, 0.1);
+  background: rgba(96, 165, 250, 0.1);
   color: var(--cyan-accent);
-  border-color: rgba(0, 210, 255, 0.25);
+  border-color: rgba(96, 165, 250, 0.25);
 }
 
 .section-heading {
@@ -228,7 +228,7 @@ nav {
 .nav-links li a:not(.nav-cta):hover,
 .nav-links li a:not(.nav-cta).active {
   color: var(--blue-primary);
-  background: rgba(2, 132, 199, 0.08);
+  background: rgba(51, 97, 226, 0.08);
 }
 
 /* Navigation Dropdown */
@@ -293,7 +293,7 @@ nav {
 }
 
 .dropdown-menu li a:hover {
-  background: rgba(2, 132, 199, 0.08) !important;
+  background: rgba(51, 97, 226, 0.08) !important;
   color: var(--blue-primary) !important;
   padding-left: 22px !important;
 }
@@ -304,7 +304,7 @@ nav {
   font-weight: 700 !important;
   padding: 10px 22px !important;
   border-radius: var(--radius-full) !important;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(51, 97, 226, 0.35) !important;
   margin-left: 10px;
   display: inline-block;
   text-decoration: none;
@@ -317,7 +317,7 @@ nav {
   background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-vibrant) 100%) !important;
   color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5) !important;
+  box-shadow: 0 6px 20px rgba(51, 97, 226, 0.5) !important;
 }
 
 /* Mobile Hamburger Button */
@@ -395,9 +395,9 @@ nav {
   height: 100%;
   background: linear-gradient(
     180deg,
-    rgba(10, 6, 36, 0.58) 0%,
-    rgba(20, 13, 64, 0.45) 50%,
-    rgba(10, 6, 36, 0.88) 100%
+    rgba(7, 10, 38, 0.58) 0%,
+    rgba(11, 15, 62, 0.45) 50%,
+    rgba(7, 10, 38, 0.88) 100%
   );
   z-index: 2;
 }
@@ -409,8 +409,8 @@ nav {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(96, 165, 250, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.05) 1px, transparent 1px);
   background-size: 60px 60px;
   z-index: 2;
   pointer-events: none;
@@ -431,8 +431,8 @@ nav {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: rgba(0, 210, 255, 0.15);
-  border: 1px solid rgba(0, 210, 255, 0.4);
+  background: rgba(96, 165, 250, 0.15);
+  border: 1px solid rgba(96, 165, 250, 0.4);
   backdrop-filter: blur(8px);
   padding: 8px 20px;
   border-radius: var(--radius-full);
@@ -489,14 +489,14 @@ nav {
   font-size: 1rem;
   padding: 14px 30px;
   border-radius: var(--radius-full);
-  box-shadow: 0 10px 25px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 10px 25px rgba(51, 97, 226, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
   background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-vibrant) 100%);
   transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(2, 132, 199, 0.5);
+  box-shadow: 0 15px 30px rgba(51, 97, 226, 0.5);
 }
 
 .btn-secondary {
@@ -540,7 +540,7 @@ nav {
   background: var(--blue-primary);
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 8px 20px rgba(51, 97, 226, 0.25);
 }
 
 /* Hero Stats Bar */
@@ -633,7 +633,7 @@ nav {
 .feature-check-item .check-icon {
   width: 22px;
   height: 22px;
-  background: rgba(2, 132, 199, 0.1);
+  background: rgba(51, 97, 226, 0.1);
   color: var(--blue-primary);
   border-radius: 50%;
   display: flex;
@@ -728,7 +728,7 @@ nav {
 .service-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
-  border-color: rgba(2, 132, 199, 0.35);
+  border-color: rgba(51, 97, 226, 0.35);
 }
 
 .service-card-img-wrap {
@@ -843,7 +843,7 @@ nav {
 
 .workflow-step-card:hover {
   background: var(--navy-card);
-  border-color: rgba(0, 210, 255, 0.4);
+  border-color: rgba(96, 165, 250, 0.4);
   transform: translateY(-6px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
@@ -859,8 +859,8 @@ nav {
   width: 60px;
   height: 60px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(2, 132, 199, 0.2) 0%, rgba(0, 210, 255, 0.2) 100%);
-  border: 1px solid rgba(0, 210, 255, 0.35);
+  background: linear-gradient(135deg, rgba(51, 97, 226, 0.2) 0%, rgba(96, 165, 250, 0.2) 100%);
+  border: 1px solid rgba(96, 165, 250, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1197,9 +1197,9 @@ nav {
 .contact-icon-box {
   width: 44px;
   height: 44px;
-  background: rgba(2, 132, 199, 0.1);
+  background: rgba(51, 97, 226, 0.1);
   color: var(--blue-primary);
-  border: 1px solid rgba(2, 132, 199, 0.2);
+  border: 1px solid rgba(51, 97, 226, 0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1221,7 +1221,7 @@ nav {
   border-color: var(--blue-primary);
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 6px 16px rgba(51, 97, 226, 0.25);
 }
 
 .contact-detail-item:hover .contact-icon-box svg {
@@ -1272,7 +1272,7 @@ nav {
   outline: none;
   border-color: var(--blue-primary);
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+  box-shadow: 0 0 0 4px rgba(51, 97, 226, 0.15);
 }
 
 .btn-submit {
@@ -1286,7 +1286,7 @@ nav {
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition);
-  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 6px 18px rgba(51, 97, 226, 0.35);
 }
 
 .btn-submit:hover {
@@ -1971,7 +1971,7 @@ a.sector-card {
 .principle-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
-  border-color: rgba(2, 132, 199, 0.3);
+  border-color: rgba(51, 97, 226, 0.3);
 }
 
 .principle-number {
