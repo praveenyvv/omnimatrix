@@ -1450,16 +1450,23 @@ footer {
 .footer-contact-row {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  font-size: 0.9rem;
+  gap: 12px;
+  font-size: 0.92rem;
   color: #cbd5e1;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+.footer-contact-row .phone-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .footer-contact-row a {
   color: #cbd5e1;
   transition: var(--transition);
   word-break: break-word;
+  letter-spacing: 0.3px;
 }
 
 .footer-contact-row a:hover {
@@ -1471,7 +1478,7 @@ footer {
   height: 18px;
   stroke: var(--cyan-accent);
   flex-shrink: 0;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .footer-bottom {
