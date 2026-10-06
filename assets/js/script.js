@@ -5,13 +5,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Header scroll effect
     const header = document.querySelector('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 30) {
+    const updateHeaderScroll = () => {
+        if (!header) return;
+        if (window.scrollY > 40) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
-    });
+    };
+    window.addEventListener('scroll', updateHeaderScroll, { passive: true });
+    updateHeaderScroll();
 
     // 2. Video Autoplay Reliability Assurance
     const heroVideo = document.getElementById('heroVideo');
@@ -43,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             const isOpen = navLinks.classList.toggle('active');
             mobileMenuBtn.classList.toggle('active', isOpen);
+            if (header) {
+                header.classList.toggle('mobile-open', isOpen);
+            }
             document.body.style.overflow = isOpen ? 'hidden' : '';
         });
 
@@ -65,6 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
                 mobileMenuBtn.classList.remove('active');
+                if (header) {
+                    header.classList.remove('mobile-open');
+                }
                 document.body.style.overflow = '';
             });
         });
@@ -74,6 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                 navLinks.classList.remove('active');
                 mobileMenuBtn.classList.remove('active');
+                if (header) {
+                    header.classList.remove('mobile-open');
+                }
                 document.body.style.overflow = '';
             }
         });
@@ -296,6 +308,63 @@ function setupLightbox() {
         }, { passive: true });
     }
 }
+
+// 7. Asynchronous Contact Form Submission Handler
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formStatus = document.getElementById('formStatus');
+
+    if (contactForm && submitBtn && formStatus) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Disable button and show sending state
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Sending Enquiry...';
+            formStatus.style.display = 'none';
+            formStatus.innerHTML = '';
+
+            const formData = new FormData(contactForm);
+
+            try {
+                const response = await fetch(contactForm.action || 'send_mail.php', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.status === 'success') {
+                    formStatus.style.display = 'block';
+                    formStatus.style.background = 'rgba(16, 185, 129, 0.12)';
+                    formStatus.style.border = '1px solid #10b981';
+                    formStatus.style.color = '#059669';
+                    formStatus.style.padding = '12px 16px';
+                    formStatus.innerHTML = `<strong>Success:</strong> ${result.message || 'Thank you for reaching out to OmniMatrix Technologies. An engineering specialist will contact you shortly.'}`;
+                    contactForm.reset();
+                } else {
+                    throw new Error(result.message || 'Submission failed. Please try again.');
+                }
+            } catch (err) {
+                formStatus.style.display = 'block';
+                formStatus.style.background = 'rgba(239, 68, 68, 0.12)';
+                formStatus.style.border = '1px solid #ef4444';
+                formStatus.style.color = '#dc2626';
+                formStatus.style.padding = '12px 16px';
+                formStatus.innerHTML = `<strong>Notice:</strong> ${err.message || 'Unable to submit right now. Please email us directly at info@omnimatrixs.com or call +91 9008344055.'}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        });
+    }
+});
+
 
 
 
