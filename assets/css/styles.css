@@ -152,7 +152,7 @@ ul {
 }
 
 /* ==========================================================================
-   Header & Navigation (Transparent Hero & Solid Scrolled Transition)
+   Header & Navigation (Glassmorphism & Mobile Drawer)
    ========================================================================== */
 header {
   position: fixed;
@@ -160,26 +160,18 @@ header {
   left: 0;
   width: 100%;
   height: var(--header-height);
-  background: rgba(11, 25, 44, 0.18);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
   z-index: 1000;
-  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, height 0.35s ease;
+  transition: var(--transition);
 }
 
 header.scrolled {
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: var(--shadow-md);
   height: 74px;
-}
-
-header.mobile-open {
-  background: rgba(255, 255, 255, 0.98) !important;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.9) !important;
 }
 
 .nav-container {
@@ -204,22 +196,12 @@ header.mobile-open {
   width: auto;
   max-width: 285px;
   object-fit: contain;
-  transition: filter 0.35s ease, height 0.35s ease, max-width 0.35s ease;
-}
-
-/* Crisp white logo on transparent hero header */
-header:not(.scrolled) .logo-link img {
-  filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
-}
-
-header.mobile-open .logo-link img {
-  filter: none !important;
+  transition: var(--transition);
 }
 
 header.scrolled .logo-link img {
   height: 48px;
   max-width: 250px;
-  filter: none;
 }
 
 nav {
@@ -236,31 +218,15 @@ nav {
 .nav-links li a {
   font-size: 0.92rem;
   font-weight: 600;
-  color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  color: #334155;
   padding: 8px 14px;
   border-radius: var(--radius-sm);
   position: relative;
-  transition: all 0.3s ease;
+  transition: var(--transition);
 }
 
-/* Hero transparent state: subtle white pill on active / hover */
-header:not(.scrolled) .nav-links li a:not(.nav-cta):hover,
-header:not(.scrolled) .nav-links li a:not(.nav-cta).active {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-/* Scrolled state: rich dark slate text */
-header.scrolled .nav-links li a {
-  color: #334155;
-  text-shadow: none;
-}
-
-header.scrolled .nav-links li a:not(.nav-cta):hover,
-header.scrolled .nav-links li a:not(.nav-cta).active {
+.nav-links li a:not(.nav-cta):hover,
+.nav-links li a:not(.nav-cta).active {
   color: var(--blue-primary);
   background: rgba(51, 97, 226, 0.08);
 }
@@ -278,12 +244,7 @@ header.scrolled .nav-links li a:not(.nav-cta).active {
 }
 
 .dropdown-chevron {
-  stroke: #ffffff;
-  transition: transform 0.25s ease, stroke 0.3s ease;
-}
-
-header.scrolled .dropdown-chevron {
-  stroke: #334155;
+  transition: transform 0.25s ease;
 }
 
 .nav-dropdown-item:hover .dropdown-chevron {
@@ -338,24 +299,16 @@ header.scrolled .dropdown-chevron {
 }
 
 .nav-cta {
-  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+  background: linear-gradient(135deg, var(--primary-navy) 0%, var(--blue-primary) 100%) !important;
   color: #ffffff !important;
   font-weight: 700 !important;
   padding: 10px 22px !important;
   border-radius: var(--radius-full) !important;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45) !important;
-  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 4px 14px rgba(51, 97, 226, 0.35) !important;
   margin-left: 10px;
   display: inline-block;
   text-decoration: none;
   transition: var(--transition);
-  text-shadow: none !important;
-}
-
-header.scrolled .nav-cta {
-  background: linear-gradient(135deg, var(--primary-navy) 0%, var(--blue-primary) 100%) !important;
-  box-shadow: 0 4px 14px rgba(51, 97, 226, 0.35) !important;
-  border: 1px solid transparent !important;
 }
 
 .nav-cta:hover,
@@ -385,14 +338,9 @@ header.scrolled .nav-cta {
 .mobile-menu-btn .bar {
   width: 100%;
   height: 3px;
-  background-color: #ffffff;
+  background-color: var(--primary-navy);
   border-radius: 2px;
   transition: var(--transition);
-}
-
-header.scrolled .mobile-menu-btn .bar,
-header.mobile-open .mobile-menu-btn .bar {
-  background-color: var(--primary-navy);
 }
 
 .mobile-menu-btn.active .bar:nth-child(1) {
@@ -1808,14 +1756,6 @@ footer {
     width: 100%;
     padding: 12px 14px;
     font-size: 1rem;
-    color: #334155 !important;
-    text-shadow: none !important;
-  }
-
-  .nav-links li a:not(.nav-cta):hover,
-  .nav-links li a:not(.nav-cta).active {
-    color: var(--blue-primary) !important;
-    background: rgba(51, 97, 226, 0.08) !important;
   }
 
   .nav-dropdown-item {
@@ -1826,10 +1766,6 @@ footer {
     display: flex;
     justify-content: space-between;
     width: 100%;
-  }
-
-  .dropdown-chevron {
-    stroke: #334155 !important;
   }
 
   .dropdown-menu {
