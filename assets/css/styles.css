@@ -825,6 +825,34 @@ a.about-dual-item:hover {
   flex-shrink: 0;
 }
 
+.tile-arrow {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #38bdf8;
+  transition: transform 0.3s ease, color 0.3s ease;
+  line-height: 1;
+  padding-left: 2px;
+}
+
+.product-tile:hover .tile-arrow {
+  color: #00d2ff;
+  transform: translate(2px, -2px);
+}
+
+.card-title-arrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: #38bdf8;
+  margin-left: 4px;
+  transition: transform 0.3s ease;
+}
+
+a.about-dual-item:hover .card-title-arrow {
+  color: #00d2ff;
+  transform: translate(2px, -2px);
+}
+
 /* ==========================================================================
    Capabilities & Services Cards
    ========================================================================== */
