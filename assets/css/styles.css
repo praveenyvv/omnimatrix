@@ -1493,6 +1493,20 @@ a.about-dual-item:hover .card-title-arrow {
   box-shadow: 0 0 0 4px rgba(51, 97, 226, 0.15);
 }
 
+.form-select optgroup {
+  font-weight: 700;
+  color: var(--primary-navy);
+  background: #f1f5f9;
+  padding: 6px 4px;
+}
+
+.form-select option {
+  font-weight: 400;
+  color: var(--text-main);
+  background: #ffffff;
+  padding: 6px 12px;
+}
+
 .btn-submit {
   width: 100%;
   padding: 14px;
