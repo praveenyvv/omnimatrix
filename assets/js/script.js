@@ -205,7 +205,7 @@ function setupContactForm() {
         }
         waText += `\n_Submitted via omnimatrixs.com_`;
 
-        const waUrl = `https://wa.me/918374087779?text=${encodeURIComponent(waText)}`;
+        const waUrl = `https://wa.me/919177017779?text=${encodeURIComponent(waText)}`;
 
         // 3. Optional background email backup (silent, non-blocking)
         try {
@@ -219,7 +219,7 @@ function setupContactForm() {
             statusMsg.style.backgroundColor = '#ecfdf5';
             statusMsg.style.color = '#065f46';
             statusMsg.style.border = '1px solid #a7f3d0';
-            statusMsg.innerHTML = `✅ <strong>Opening WhatsApp chat with OmniMatrix Engineering specialist...</strong><br>If WhatsApp does not open automatically, <a href="${waUrl}" target="_blank" style="color: #047857; text-decoration: underline; font-weight: 700;">click here to start chat now</a>.`;
+            statusMsg.innerHTML = `✅ <strong>Opening WhatsApp chat with OmniMatrix Engineering specialist (+91 9177017779)...</strong><br>If WhatsApp does not open automatically, <a href="${waUrl}" target="_blank" style="color: #047857; text-decoration: underline; font-weight: 700;">click here to start chat now</a>.`;
         }
 
         // 5. Open WhatsApp in new tab / app
@@ -235,7 +235,7 @@ function setupFloatingWhatsApp() {
 
     const waBtn = document.createElement('a');
     waBtn.className = 'whatsapp-float-btn';
-    waBtn.href = 'https://wa.me/918374087779?text=Hello%20OmniMatrix%20Technologies%2C%20I%20would%20like%20to%20enquire%20about%20tooling%20and%20manufacturing%20solutions.';
+    waBtn.href = 'https://wa.me/919177017779?text=Hello%20OmniMatrix%20Technologies%2C%20I%20would%20like%20to%20enquire%20about%20tooling%20and%20manufacturing%20solutions.';
     waBtn.target = '_blank';
     waBtn.rel = 'noopener noreferrer';
     waBtn.setAttribute('aria-label', 'Chat with OmniMatrix on WhatsApp');
