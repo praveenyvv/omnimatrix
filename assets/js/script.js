@@ -199,24 +199,40 @@ function setupContactForm() {
             const formData = new FormData(form);
             const response = await fetch('send_mail.php', {
                 method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
                 body: formData
             });
 
-            const result = await response.json();
+            let result = null;
+            try {
+                result = await response.json();
+            } catch (jsonErr) {
+                console.warn('Response was not JSON, checking status:', response.status);
+            }
 
             if (statusMsg) {
                 statusMsg.style.display = 'block';
-                if (result.status === 'success') {
+                if (response.ok && result && result.status === 'success') {
                     statusMsg.style.backgroundColor = '#ecfdf5';
                     statusMsg.style.color = '#065f46';
                     statusMsg.style.border = '1px solid #a7f3d0';
                     statusMsg.innerHTML = `✅ <strong>${result.message || 'Thank you! Your enquiry has been received.'}</strong><br>Our technical engineering team will review your specifications and contact you shortly.`;
                     form.reset();
-                } else {
+                } else if (result && result.message) {
                     statusMsg.style.backgroundColor = '#fef2f2';
                     statusMsg.style.color = '#991b1b';
                     statusMsg.style.border = '1px solid #fecaca';
-                    statusMsg.innerHTML = `⚠️ <strong>Notice:</strong> ${result.message || 'Unable to transmit enquiry directly.'} You can email us directly at <a href="mailto:info@omnimatrixs.com" style="color:#991b1b; text-decoration:underline; font-weight:700;">info@omnimatrixs.com</a> or use the WhatsApp button below.`;
+                    statusMsg.innerHTML = `⚠️ <strong>Notice:</strong> ${result.message}<br>You can also email us directly at <a href="mailto:info@omnimatrixs.com" style="color:#991b1b; text-decoration:underline; font-weight:700;">info@omnimatrixs.com</a> or use WhatsApp (+91 9177017779).`;
+                } else if (response.ok) {
+                    statusMsg.style.backgroundColor = '#ecfdf5';
+                    statusMsg.style.color = '#065f46';
+                    statusMsg.style.border = '1px solid #a7f3d0';
+                    statusMsg.innerHTML = `✅ <strong>Thank you! Your enquiry has been received.</strong><br>Our engineering specialist will contact you shortly.`;
+                    form.reset();
+                } else {
+                    throw new Error('Server returned HTTP ' + response.status);
                 }
             }
         } catch (error) {
