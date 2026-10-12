@@ -164,8 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 7. Lightbox Setup for Galleries
     setupLightbox();
 
-    // 8. Contact & RFQ Form Handler
+    // 8. Contact & RFQ Form Handler (WhatsApp Integration)
     setupContactForm();
+
+    // 9. Floating WhatsApp Quick-Chat Widget
+    setupFloatingWhatsApp();
 });
 
 function setupContactForm() {
@@ -175,61 +178,77 @@ function setupContactForm() {
     const statusMsg = document.getElementById('formStatusMsg');
     const submitBtn = document.getElementById('submitBtn');
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
-        
-        const originalBtnText = submitBtn ? submitBtn.innerText : 'Submit Technical Enquiry';
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Transmitting Enquiry...';
-        }
 
-        if (statusMsg) {
-            statusMsg.style.display = 'none';
-        }
+        // 1. Extract values
+        const nameInput = form.querySelector('[name="name"]');
+        const companyInput = form.querySelector('[name="company"]');
+        const emailInput = form.querySelector('[name="email"]');
+        const serviceSelect = form.querySelector('[name="service"]');
+        const messageInput = form.querySelector('[name="message"]');
 
+        const name = nameInput ? nameInput.value.trim() : '';
+        const company = companyInput ? companyInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+        const service = serviceSelect && serviceSelect.selectedIndex >= 0 ? serviceSelect.options[serviceSelect.selectedIndex].text : 'General Technical Consultation';
+        const message = messageInput ? messageInput.value.trim() : '';
+
+        // 2. Format WhatsApp RFQ Message
+        let waText = `*New Technical RFQ / Enquiry - OmniMatrix Technologies*\n\n`;
+        waText += `👤 *Name:* ${name}\n`;
+        if (company) waText += `🏢 *Company:* ${company}\n`;
+        waText += `✉️ *Email:* ${email}\n`;
+        waText += `⚙️ *Requirement:* ${service}\n`;
+        if (message) {
+            waText += `📝 *Specifications:* ${message}\n`;
+        }
+        waText += `\n_Submitted via omnimatrixs.com_`;
+
+        const waUrl = `https://wa.me/918374087779?text=${encodeURIComponent(waText)}`;
+
+        // 3. Optional background email backup (silent, non-blocking)
         try {
             const formData = new FormData(form);
-            const response = await fetch('send_mail.php', {
-                method: 'POST',
-                body: formData
-            });
+            fetch('send_mail.php', { method: 'POST', body: formData }).catch(() => {});
+        } catch (_) {}
 
-            const data = await response.json();
-
-            if (response.ok && data.status === 'success') {
-                if (statusMsg) {
-                    statusMsg.style.display = 'block';
-                    statusMsg.style.backgroundColor = '#ecfdf5';
-                    statusMsg.style.color = '#065f46';
-                    statusMsg.style.border = '1px solid #a7f3d0';
-                    statusMsg.innerText = data.message || 'Thank you for your enquiry. We will contact you shortly.';
-                } else {
-                    alert(data.message);
-                }
-                form.reset();
-            } else {
-                throw new Error(data.message || 'Server error occurred.');
-            }
-        } catch (err) {
-            // Graceful fallback for local test or server without mail agent
-            if (statusMsg) {
-                statusMsg.style.display = 'block';
-                statusMsg.style.backgroundColor = '#f0fdf4';
-                statusMsg.style.color = '#15803d';
-                statusMsg.style.border = '1px solid #bbf7d0';
-                statusMsg.innerText = 'Thank you! Your enquiry has been recorded. An engineering specialist will contact you shortly.';
-            } else {
-                alert('Thank you! Your enquiry has been recorded.');
-            }
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalBtnText;
-            }
+        // 4. In-page confirmation status
+        if (statusMsg) {
+            statusMsg.style.display = 'block';
+            statusMsg.style.backgroundColor = '#ecfdf5';
+            statusMsg.style.color = '#065f46';
+            statusMsg.style.border = '1px solid #a7f3d0';
+            statusMsg.innerHTML = `✅ <strong>Opening WhatsApp chat with OmniMatrix Engineering specialist...</strong><br>If WhatsApp does not open automatically, <a href="${waUrl}" target="_blank" style="color: #047857; text-decoration: underline; font-weight: 700;">click here to start chat now</a>.`;
         }
+
+        // 5. Open WhatsApp in new tab / app
+        window.open(waUrl, '_blank');
+
+        // Reset form
+        form.reset();
     });
 }
+
+function setupFloatingWhatsApp() {
+    if (document.querySelector('.whatsapp-float-btn')) return;
+
+    const waBtn = document.createElement('a');
+    waBtn.className = 'whatsapp-float-btn';
+    waBtn.href = 'https://wa.me/918374087779?text=Hello%20OmniMatrix%20Technologies%2C%20I%20would%20like%20to%20enquire%20about%20tooling%20and%20manufacturing%20solutions.';
+    waBtn.target = '_blank';
+    waBtn.rel = 'noopener noreferrer';
+    waBtn.setAttribute('aria-label', 'Chat with OmniMatrix on WhatsApp');
+    waBtn.innerHTML = `
+        <svg viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span class="whatsapp-float-label">Chat on WhatsApp</span>
+    `;
+
+    document.body.appendChild(waBtn);
+}
+
 
 
 // 7. Lightbox Setup for Galleries with Multi-Image Slider & Touch Support
