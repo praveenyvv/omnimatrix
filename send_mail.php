@@ -40,8 +40,8 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-// 4. Email Configuration
-$to = 'info@omnimatrixs.com, omnimatrixtechnologies@gmail.com, praveenyvv1@gmail.com';
+// 4. Email Configuration (Testing mode: direct to praveenyvv1@gmail.com)
+$to = 'praveenyvv1@gmail.com';
 $email_subject = "New RFQ / Technical Enquiry from " . $name . " [" . ($company ? $company : "OmniMatrix Web") . "]";
 
 // 5. Build HTML Email Body
