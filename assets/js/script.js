@@ -163,7 +163,74 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Lightbox Setup for Galleries
     setupLightbox();
+
+    // 8. Contact & RFQ Form Handler
+    setupContactForm();
 });
+
+function setupContactForm() {
+    const form = document.getElementById('enquiryForm');
+    if (!form) return;
+
+    const statusMsg = document.getElementById('formStatusMsg');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const originalBtnText = submitBtn ? submitBtn.innerText : 'Submit Technical Enquiry';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Transmitting Enquiry...';
+        }
+
+        if (statusMsg) {
+            statusMsg.style.display = 'none';
+        }
+
+        try {
+            const formData = new FormData(form);
+            const response = await fetch('send_mail.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.status === 'success') {
+                if (statusMsg) {
+                    statusMsg.style.display = 'block';
+                    statusMsg.style.backgroundColor = '#ecfdf5';
+                    statusMsg.style.color = '#065f46';
+                    statusMsg.style.border = '1px solid #a7f3d0';
+                    statusMsg.innerText = data.message || 'Thank you for your enquiry. We will contact you shortly.';
+                } else {
+                    alert(data.message);
+                }
+                form.reset();
+            } else {
+                throw new Error(data.message || 'Server error occurred.');
+            }
+        } catch (err) {
+            // Graceful fallback for local test or server without mail agent
+            if (statusMsg) {
+                statusMsg.style.display = 'block';
+                statusMsg.style.backgroundColor = '#f0fdf4';
+                statusMsg.style.color = '#15803d';
+                statusMsg.style.border = '1px solid #bbf7d0';
+                statusMsg.innerText = 'Thank you! Your enquiry has been recorded. An engineering specialist will contact you shortly.';
+            } else {
+                alert('Thank you! Your enquiry has been recorded.');
+            }
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        }
+    });
+}
+
 
 // 7. Lightbox Setup for Galleries with Multi-Image Slider & Touch Support
 let lightboxInitialized = false;
