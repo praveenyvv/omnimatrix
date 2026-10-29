@@ -2110,7 +2110,7 @@ footer {
   }
 
   .about-dual-item {
-    height: 280px;
+    height: 310px;
   }
 
   .products-showcase-grid {
@@ -2119,8 +2119,19 @@ footer {
   }
 
   .product-tile-label {
-    font-size: 0.52rem;
-    padding: 6px 4px 2px;
+    font-size: 0.58rem;
+    font-weight: 700;
+    padding: 10px 4px 3px;
+    letter-spacing: 0;
+  }
+
+  .product-tile-accent {
+    width: 2.5px;
+    height: 7px;
+  }
+
+  .tile-arrow {
+    display: none;
   }
 
   .about-dual-title {
@@ -2149,8 +2160,89 @@ footer {
     gap: 28px;
   }
 
-  .services-grid, .eng-services-grid, .sectors-grid, .gallery-grid, .workflow-pipeline-grid {
+  .services-grid, .eng-services-grid, .gallery-grid, .workflow-pipeline-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Compact 2-column grid on mobile for Industries We Serve */
+  .sectors-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .sector-card {
+    height: 155px;
+    border-radius: var(--radius-sm);
+  }
+
+  .sector-card-overlay {
+    padding: 12px 10px;
+    background: linear-gradient(180deg, rgba(11, 21, 45, 0.15) 0%, rgba(11, 21, 45, 0.88) 100%);
+  }
+
+  .sector-card-overlay h3 {
+    font-size: 0.96rem;
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+
+  .sector-card-overlay p {
+    font-size: 0.68rem;
+    line-height: 1.25;
+    color: #e2e8f0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Compact, easily scannable cards on mobile for Capabilities */
+  .service-card {
+    border-radius: var(--radius-md);
+  }
+
+  .service-card-img-wrap {
+    height: 150px;
+  }
+
+  .service-card-tag {
+    top: 10px;
+    left: 10px;
+    padding: 3px 9px;
+    font-size: 0.65rem;
+  }
+
+  .service-card-body {
+    padding: 14px 16px 16px;
+  }
+
+  .service-card-title {
+    font-size: 1.08rem;
+    margin-bottom: 6px;
+  }
+
+  .service-card-desc {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .service-card-link {
+    font-size: 0.84rem;
+  }
+
+  /* Hero badge on mobile - single clean line */
+  .hero-badge {
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    gap: 6px;
+    white-space: nowrap;
+    max-width: 95%;
   }
 
   .lightbox-prev { left: 10px; }
