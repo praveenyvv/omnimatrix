@@ -135,8 +135,8 @@
     }
     </script>
     <link rel="icon" type="image/jpeg" href="website-assets/9-Branding-Logos/03-logo-favicon.jpg?v=28">
-    <link rel="stylesheet" href="assets/css/styles.css?v=30">
-    <script defer src="assets/js/script.js?v=29"></script>
+    <link rel="stylesheet" href="assets/css/styles.css?v=31">
+    <script defer src="assets/js/script.js?v=31"></script>
 </head>
 <body>
 
@@ -329,64 +329,80 @@
                 <p class="section-subtext">Our integrated turnkey workflow transforms initial digital concepts into precision tooling, robotic injection moulding, and high-quality mass-produced finished goods.</p>
             </div>
 
-            <div class="workflow-pipeline-grid">
-                <!-- Step 1 -->
-                <div class="workflow-stage-card">
-                    <div class="workflow-stage-header">
-                        <span class="workflow-stage-num">01</span>
-                        <h3 class="workflow-stage-title">Concept &amp; Design</h3>
-                        <span class="workflow-stage-arrow" aria-hidden="true">&raquo;</span>
+            <!-- 5-Stage Interactive Card Deck / Pipeline -->
+            <div class="workflow-deck-wrapper" id="workflowDeckWrapper">
+                <!-- Interactive Deck Controls / Hint -->
+                <div class="workflow-deck-header-bar">
+                    <div class="workflow-deck-hint" id="workflowDeckHint">
+                        <span class="deck-hint-pulse"></span>
+                        <span class="deck-hint-text"><strong>Core Expertise: Injection Moulding</strong> — Click deck to reveal all 5 stages</span>
                     </div>
-                    <div class="workflow-stage-img-wrap">
-                        <img src="website-assets/10-Homepage-Hero-About-Workflow/step-01-concept-design.jpg?v=23" alt="Concept &amp; Design Stage" loading="lazy">
-                    </div>
+                    <button type="button" class="deck-toggle-btn" id="workflowDeckToggleBtn" aria-expanded="false" aria-label="Toggle all 5 manufacturing stages">
+                        <span class="toggle-text">Explore All 5 Stages</span>
+                        <span class="toggle-icon" aria-hidden="true">✦</span>
+                    </button>
                 </div>
 
-                <!-- Step 2 -->
-                <div class="workflow-stage-card">
-                    <div class="workflow-stage-header">
-                        <span class="workflow-stage-num">02</span>
-                        <h3 class="workflow-stage-title">Mould Development</h3>
-                        <span class="workflow-stage-arrow" aria-hidden="true">&raquo;</span>
+                <div class="workflow-pipeline-grid workflow-deck" id="workflowDeck" role="region" aria-label="5-Stage Manufacturing Pipeline Deck">
+                    <!-- Step 1 -->
+                    <div class="workflow-stage-card stage-1" data-stage="1" tabindex="0" role="button" aria-label="Stage 1: Concept & Design">
+                        <div class="workflow-stage-header">
+                            <span class="workflow-stage-num">01</span>
+                            <h3 class="workflow-stage-title">Concept &amp; Design</h3>
+                            <span class="workflow-stage-arrow" aria-hidden="true">&raquo;</span>
+                        </div>
+                        <div class="workflow-stage-img-wrap">
+                            <img src="website-assets/10-Homepage-Hero-About-Workflow/step-01-concept-design.jpg?v=23" alt="Concept &amp; Design Stage" loading="lazy">
+                        </div>
                     </div>
-                    <div class="workflow-stage-img-wrap">
-                        <img src="website-assets/10-Homepage-Hero-About-Workflow/step-02-mould-development.jpg?v=23" alt="Mould Development Stage" loading="lazy">
-                    </div>
-                </div>
 
-                <!-- Step 3 -->
-                <div class="workflow-stage-card">
-                    <div class="workflow-stage-header">
-                        <span class="workflow-stage-num">03</span>
-                        <h3 class="workflow-stage-title">Injection Moulding</h3>
-                        <span class="workflow-stage-arrow" aria-hidden="true">&raquo;</span>
+                    <!-- Step 2 -->
+                    <div class="workflow-stage-card stage-2" data-stage="2" tabindex="0" role="button" aria-label="Stage 2: Mould Development">
+                        <div class="workflow-stage-header">
+                            <span class="workflow-stage-num">02</span>
+                            <h3 class="workflow-stage-title">Mould Development</h3>
+                            <span class="workflow-stage-arrow" aria-hidden="true">&raquo;</span>
+                        </div>
+                        <div class="workflow-stage-img-wrap">
+                            <img src="website-assets/10-Homepage-Hero-About-Workflow/step-02-mould-development.jpg?v=23" alt="Mould Development Stage" loading="lazy">
+                        </div>
                     </div>
-                    <div class="workflow-stage-img-wrap">
-                        <img src="website-assets/10-Homepage-Hero-About-Workflow/step-03-injection-moulding.jpg?v=23" alt="Injection Moulding Stage" loading="lazy">
-                    </div>
-                </div>
 
-                <!-- Step 4 -->
-                <div class="workflow-stage-card">
-                    <div class="workflow-stage-header">
-                        <span class="workflow-stage-num">04</span>
-                        <h3 class="workflow-stage-title">Finishing &amp; Assembly</h3>
-                        <span class="workflow-stage-arrow" aria-hidden="true">&raquo;</span>
+                    <!-- Step 3: Hero Card In Front -->
+                    <div class="workflow-stage-card stage-3 hero-stage" data-stage="3" tabindex="0" role="button" aria-label="Stage 3: Injection Moulding (Core Production Engine)">
+                        <div class="stage-hero-badge">Core Production Engine</div>
+                        <div class="workflow-stage-header">
+                            <span class="workflow-stage-num">03</span>
+                            <h3 class="workflow-stage-title">Injection Moulding</h3>
+                            <span class="workflow-stage-arrow" aria-hidden="true">&raquo;</span>
+                        </div>
+                        <div class="workflow-stage-img-wrap">
+                            <img src="website-assets/10-Homepage-Hero-About-Workflow/step-03-injection-moulding.jpg?v=23" alt="Injection Moulding Stage" loading="lazy">
+                        </div>
                     </div>
-                    <div class="workflow-stage-img-wrap">
-                        <img src="website-assets/10-Homepage-Hero-About-Workflow/step-04-finishing-assembly.jpg?v=23" alt="Finishing &amp; Assembly Stage" loading="lazy">
-                    </div>
-                </div>
 
-                <!-- Step 5 -->
-                <div class="workflow-stage-card">
-                    <div class="workflow-stage-header">
-                        <span class="workflow-stage-num">05</span>
-                        <h3 class="workflow-stage-title">Finished Products</h3>
-                        <span class="workflow-stage-arrow final" aria-hidden="true">&#10003;</span>
+                    <!-- Step 4 -->
+                    <div class="workflow-stage-card stage-4" data-stage="4" tabindex="0" role="button" aria-label="Stage 4: Finishing & Assembly">
+                        <div class="workflow-stage-header">
+                            <span class="workflow-stage-num">04</span>
+                            <h3 class="workflow-stage-title">Finishing &amp; Assembly</h3>
+                            <span class="workflow-stage-arrow" aria-hidden="true">&raquo;</span>
+                        </div>
+                        <div class="workflow-stage-img-wrap">
+                            <img src="website-assets/10-Homepage-Hero-About-Workflow/step-04-finishing-assembly.jpg?v=23" alt="Finishing &amp; Assembly Stage" loading="lazy">
+                        </div>
                     </div>
-                    <div class="workflow-stage-img-wrap">
-                        <img src="website-assets/10-Homepage-Hero-About-Workflow/step-05-finished-products.jpg?v=23" alt="Finished Products Stage" loading="lazy">
+
+                    <!-- Step 5 -->
+                    <div class="workflow-stage-card stage-5" data-stage="5" tabindex="0" role="button" aria-label="Stage 5: Finished Products">
+                        <div class="workflow-stage-header">
+                            <span class="workflow-stage-num">05</span>
+                            <h3 class="workflow-stage-title">Finished Products</h3>
+                            <span class="workflow-stage-arrow final" aria-hidden="true">&#10003;</span>
+                        </div>
+                        <div class="workflow-stage-img-wrap">
+                            <img src="website-assets/10-Homepage-Hero-About-Workflow/step-05-finished-products.jpg?v=23" alt="Finished Products Stage" loading="lazy">
+                        </div>
                     </div>
                 </div>
             </div>
