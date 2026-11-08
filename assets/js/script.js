@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * 5-Stage Manufacturing Pipeline: Interactive Stacked Card Deck
- * Hero Card (Step 3: Injection Moulding) in front, other 4 layered behind.
+ * Hero Card (Step 3: Blow Moulding) in front, other 4 layered behind.
  * Click to expand full sequence, click again to collapse back into deck.
  */
 function setupWorkflowDeck() {
