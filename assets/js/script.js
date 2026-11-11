@@ -176,42 +176,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * 5-Stage Manufacturing Pipeline: Interactive Stacked Card Deck
- * Hero Card (Step 3: Injection Moulding) in front, other 4 layered behind.
+ * Supports multiple decks (e.g. Injection Moulding, Blow Moulding).
+ * Hero Card (Step 3) in front, other 4 layered behind.
  * Click to expand full sequence, click again to collapse back into deck.
  */
 function setupWorkflowDeck() {
-    const wrapper = document.getElementById('workflowDeckWrapper');
-    const deck = document.getElementById('workflowDeck');
-    const toggleBtn = document.getElementById('workflowDeckToggleBtn');
-    if (!wrapper || !deck) return;
+    const wrappers = document.querySelectorAll('.workflow-deck-wrapper');
+    if (!wrappers.length) return;
 
-    let isExpanded = false;
+    wrappers.forEach(wrapper => {
+        const deck = wrapper.querySelector('.workflow-pipeline-grid');
+        const toggleBtn = wrapper.querySelector('.deck-toggle-btn');
+        if (!deck) return;
 
-    function setExpandedState(expand, shouldScroll = false) {
-        isExpanded = expand;
-        wrapper.classList.toggle('is-expanded', isExpanded);
+        let isExpanded = false;
 
-        if (toggleBtn) {
-            toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-            const toggleText = toggleBtn.querySelector('.toggle-text');
-            const toggleIcon = toggleBtn.querySelector('.toggle-icon');
-            if (toggleText) {
-                toggleText.textContent = isExpanded ? 'Collapse into Deck' : 'Explore All 5 Stages';
+        function setExpandedState(expand, shouldScroll = false) {
+            isExpanded = expand;
+            wrapper.classList.toggle('is-expanded', isExpanded);
+
+            if (toggleBtn) {
+                toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                const toggleText = toggleBtn.querySelector('.toggle-text');
+                const toggleIcon = toggleBtn.querySelector('.toggle-icon');
+                if (toggleText) {
+                    toggleText.textContent = isExpanded ? 'Collapse into Deck' : 'Explore All 5 Stages';
+                }
+                if (toggleIcon) {
+                    toggleIcon.textContent = isExpanded ? '✕' : '✦';
+                }
             }
-            if (toggleIcon) {
-                toggleIcon.textContent = isExpanded ? '✕' : '✦';
-            }
-        }
 
-        // Accessibility announcement
-        deck.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+            deck.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
 
-        // Optional smooth scroll back to workflow top when collapsing
-        if (!isExpanded && shouldScroll) {
-            const section = document.getElementById('workflow');
-            if (section) {
+            if (!isExpanded && shouldScroll) {
                 const headerOffset = 90;
-                const elementPosition = section.getBoundingClientRect().top;
+                const elementPosition = wrapper.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                 window.scrollTo({
                     top: offsetPosition,
@@ -219,44 +219,38 @@ function setupWorkflowDeck() {
                 });
             }
         }
-    }
 
-    // Toggle button click
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            setExpandedState(!isExpanded, true);
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setExpandedState(!isExpanded, true);
+            });
+        }
+
+        const cards = deck.querySelectorAll('.workflow-stage-card');
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!isExpanded) {
+                    setExpandedState(true);
+                } else {
+                    setExpandedState(false, true);
+                }
+            });
+
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setExpandedState(!isExpanded, isExpanded);
+                }
+            });
         });
-    }
 
-    // Clicking anywhere on the deck cards
-    const cards = deck.querySelectorAll('.workflow-stage-card');
-    cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            e.stopPropagation();
-            // If collapsed, clicking ANY card expands the full deck
+        deck.addEventListener('click', (e) => {
             if (!isExpanded) {
                 setExpandedState(true);
-            } else {
-                // If already expanded, clicking a card collapses back into deck
-                setExpandedState(false, true);
             }
         });
-
-        // Keyboard accessibility (Enter / Space)
-        card.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                setExpandedState(!isExpanded, isExpanded);
-            }
-        });
-    });
-
-    // Clicking the background of the deck wrapper when collapsed also expands
-    deck.addEventListener('click', (e) => {
-        if (!isExpanded) {
-            setExpandedState(true);
-        }
     });
 }
 
