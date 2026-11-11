@@ -187,6 +187,7 @@ function setupWorkflowDeck() {
     wrappers.forEach(wrapper => {
         const deck = wrapper.querySelector('.workflow-pipeline-grid');
         const toggleBtn = wrapper.querySelector('.deck-toggle-btn');
+        const hint = wrapper.querySelector('.workflow-deck-hint');
         if (!deck) return;
 
         let isExpanded = false;
@@ -212,7 +213,7 @@ function setupWorkflowDeck() {
             if (!isExpanded && shouldScroll) {
                 const headerOffset = 90;
                 const elementPosition = wrapper.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                const offsetPosition = elementPosition + (window.scrollY || window.pageYOffset) - headerOffset;
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
@@ -220,16 +221,30 @@ function setupWorkflowDeck() {
             }
         }
 
+        // 1. Toggle Button
         if (toggleBtn) {
             toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 e.stopPropagation();
-                setExpandedState(!isExpanded, true);
+                setExpandedState(!isExpanded, isExpanded);
             });
         }
 
+        // 2. Hint pill click also toggles
+        if (hint) {
+            hint.style.cursor = 'pointer';
+            hint.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setExpandedState(!isExpanded, isExpanded);
+            });
+        }
+
+        // 3. Card click handles expansion / collapse
         const cards = deck.querySelectorAll('.workflow-stage-card');
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 if (!isExpanded) {
                     setExpandedState(true);
@@ -246,8 +261,10 @@ function setupWorkflowDeck() {
             });
         });
 
+        // 4. Deck container click when collapsed expands
         deck.addEventListener('click', (e) => {
             if (!isExpanded) {
+                e.preventDefault();
                 setExpandedState(true);
             }
         });
