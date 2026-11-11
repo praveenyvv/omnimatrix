@@ -979,118 +979,116 @@ a.about-dual-item:hover .card-title-arrow {
   color: #94a3b8;
 }
 
-/* 5-Stage Interactive Card Deck / Pipeline */
-.workflow-deck-wrapper {
-  margin-bottom: 50px;
-  position: relative;
-}
-
-.workflow-deck-header-bar {
+/* Technology Switcher: Injection Moulding vs Blow Moulding */
+.workflow-toggle-wrap {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
+  margin: 0 auto 36px;
 }
 
-.workflow-deck-hint {
+.workflow-toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: var(--radius-full);
+  padding: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  gap: 8px;
+}
+
+.workflow-tab-btn {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: rgba(16, 31, 66, 0.7);
-  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 11px 26px;
   border-radius: var(--radius-full);
-  padding: 8px 18px;
-  color: #e2e8f0;
-  font-size: 0.88rem;
-  backdrop-filter: blur(8px);
-}
-
-.deck-hint-pulse {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--cyan-accent);
-  box-shadow: 0 0 10px var(--cyan-accent);
-  animation: deckPulse 2s infinite ease-in-out;
-  flex-shrink: 0;
-}
-
-@keyframes deckPulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 16px var(--cyan-accent); }
-}
-
-.workflow-deck-hint strong {
-  color: var(--cyan-accent);
+  border: 1px solid transparent;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.95rem;
   font-weight: 700;
-}
-
-.deck-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--blue-primary) 0%, #0284c7 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px 22px;
-  border-radius: var(--radius-full);
-  font-size: 0.9rem;
-  font-weight: 700;
+  letter-spacing: 0.3px;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(51, 97, 226, 0.4);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.deck-toggle-btn:hover {
-  background: linear-gradient(135deg, var(--blue-vibrant) 0%, var(--cyan-accent) 100%);
-  color: #070a26;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(56, 189, 248, 0.5);
+.workflow-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
 }
 
-.deck-toggle-btn .toggle-icon {
-  font-size: 0.95rem;
-  transition: transform 0.4s ease;
-  display: inline-block;
+.workflow-tab-btn .tab-indicator-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.45);
+  transition: all 0.3s ease;
 }
 
-.workflow-deck-wrapper.is-expanded .deck-toggle-btn .toggle-icon {
-  transform: rotate(45deg);
+.workflow-tab-btn.active {
+  background: linear-gradient(135deg, var(--blue-primary) 0%, #0284c7 100%);
+  color: #ffffff;
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 4px 20px rgba(51, 97, 226, 0.5);
 }
 
-/* Base Deck Grid */
+.workflow-tab-btn.active .tab-indicator-dot {
+  background: var(--cyan-accent);
+  box-shadow: 0 0 12px var(--cyan-accent);
+}
+
+/* 5-Stage Pipeline Container */
+.workflow-pipeline-container {
+  width: 100%;
+  margin-bottom: 50px;
+}
+
 .workflow-pipeline-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   position: relative;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* STACKED DECK STATE (Default, when NOT expanded) */
-.workflow-deck-wrapper:not(.is-expanded) .workflow-deck {
-  display: block;
-  position: relative;
-  height: 400px;
-  max-width: 440px;
-  margin: 0 auto;
-  perspective: 1200px;
-  cursor: pointer;
+.stage-hero-badge {
+  position: absolute;
+  top: -12px;
+  right: 18px;
+  background: linear-gradient(135deg, #0284c7 0%, var(--cyan-accent) 100%);
+  color: #070a26;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.6);
+  z-index: 20;
+  border: 1px solid #ffffff;
+  pointer-events: none;
 }
 
-/* Micro-float idle motion for entire stack */
-.workflow-deck-wrapper:not(.is-expanded) .workflow-deck {
-  animation: deckIdleMotion 6s infinite ease-in-out;
+.workflow-stage-card.active-tech-stage {
+  border-color: rgba(56, 189, 248, 0.65);
+  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.22);
 }
 
-@keyframes deckIdleMotion {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(0.4deg); }
+.workflow-stage-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.2s ease, transform 0.3s ease;
 }
 
-.workflow-deck-wrapper:not(.is-expanded) .workflow-stage-card {
+.workflow-stage-img-wrap img.switching {
+  opacity: 0.25;
+  transform: scale(0.98);
+}
+
+.workflow-stage-card {
   position: absolute;
   top: 0;
   left: 0;
@@ -2393,68 +2391,29 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  /* Responsive Workflow Deck on Mobile */
-  .workflow-deck-header-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+  /* Responsive Technology Switcher & Pipeline */
+  .workflow-toggle-wrap {
+    margin-bottom: 24px;
   }
 
-  .workflow-deck-hint {
-    font-size: 0.78rem;
-    padding: 8px 12px;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .deck-toggle-btn {
+  .workflow-toggle-pill {
     width: 100%;
+    max-width: 360px;
+  }
+
+  .workflow-tab-btn {
+    flex: 1;
     justify-content: center;
-    padding: 12px 18px;
-    font-size: 0.88rem;
+    padding: 10px 14px;
+    font-size: 0.85rem;
   }
 
-  .workflow-deck-wrapper:not(.is-expanded) .workflow-deck {
-    height: 330px;
-    max-width: 290px;
-  }
-
-  .workflow-deck-wrapper:not(.is-expanded) .workflow-stage-card {
-    max-width: 280px;
-    height: 310px;
-  }
-
-  .workflow-deck-wrapper:not(.is-expanded) .workflow-stage-img-wrap {
-    height: 240px;
-  }
-
-  .workflow-deck-wrapper:not(.is-expanded) .workflow-stage-card.stage-3 {
-    transform: translate3d(0, 0, 30px) rotate(0deg);
-  }
-
-  .workflow-deck-wrapper:not(.is-expanded) .workflow-stage-card.stage-2 {
-    transform: translate3d(-18px, 10px, 15px) rotate(-4deg);
-  }
-
-  .workflow-deck-wrapper:not(.is-expanded) .workflow-stage-card.stage-4 {
-    transform: translate3d(18px, 10px, 8px) rotate(4deg);
-  }
-
-  .workflow-deck-wrapper:not(.is-expanded) .workflow-stage-card.stage-1 {
-    transform: translate3d(-34px, 20px, 0px) rotate(-7deg);
-  }
-
-  .workflow-deck-wrapper:not(.is-expanded) .workflow-stage-card.stage-5 {
-    transform: translate3d(34px, 20px, -8px) rotate(7deg);
-  }
-
-  /* Expanded on Mobile: single-column full preview with clean spacing */
-  .workflow-deck-wrapper.is-expanded .workflow-deck {
+  .workflow-pipeline-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
   }
 
-  .workflow-deck-wrapper.is-expanded .workflow-stage-card:not(:last-child)::after {
+  .workflow-stage-card:not(:last-child)::after {
     display: none;
   }
 

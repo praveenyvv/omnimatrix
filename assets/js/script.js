@@ -167,107 +167,81 @@ document.addEventListener('DOMContentLoaded', () => {
     // 8. Contact & RFQ Form Handler (WhatsApp Integration)
     setupContactForm();
 
-    // 9. Interactive Workflow 5-Stage Deck of Cards
-    setupWorkflowDeck();
+    // 9. Advanced Injection & Blow Moulding Technology Switcher
+    setupWorkflowSwitcher();
 
     // 10. Floating WhatsApp Quick-Chat Widget
     setupFloatingWhatsApp();
 });
 
 /**
- * 5-Stage Manufacturing Pipeline: Interactive Stacked Card Deck
- * Supports multiple decks (e.g. Injection Moulding, Blow Moulding).
- * Hero Card (Step 3) in front, other 4 layered behind.
- * Click to expand full sequence, click again to collapse back into deck.
+ * Advanced Injection & Blow Moulding Technology Switcher
+ * Simple, professional in-place tab switching between Injection Moulding and Blow Moulding
  */
-function setupWorkflowDeck() {
-    const wrappers = document.querySelectorAll('.workflow-deck-wrapper');
-    if (!wrappers.length) return;
+function setupWorkflowSwitcher() {
+    const tabInjection = document.getElementById('tabInjectionMoulding');
+    const tabBlow = document.getElementById('tabBlowMoulding');
+    if (!tabInjection || !tabBlow) return;
 
-    wrappers.forEach(wrapper => {
-        const deck = wrapper.querySelector('.workflow-pipeline-grid');
-        const toggleBtn = wrapper.querySelector('.deck-toggle-btn');
-        const hint = wrapper.querySelector('.workflow-deck-hint');
-        if (!deck) return;
+    const data = {
+        injection: {
+            stage3Title: 'Injection Moulding',
+            stage3Alt: 'Injection Moulding Production Stage',
+            images: [
+                { id: 'stage1Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/step-01-concept-design.jpg?v=37', alt: 'Concept & Design Stage' },
+                { id: 'stage2Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/step-02-mould-development.jpg?v=37', alt: 'Mould Development Stage' },
+                { id: 'stage3Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/step-03-injection-moulding.jpg?v=37', alt: 'Injection Moulding Production Stage' },
+                { id: 'stage4Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/step-04-finishing-assembly.jpg?v=37', alt: 'Finishing & Assembly Stage' },
+                { id: 'stage5Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/step-05-finished-products.jpg?v=37', alt: 'Finished Products Stage' }
+            ]
+        },
+        blow: {
+            stage3Title: 'Blow Moulding',
+            stage3Alt: 'Blow Moulding Production Stage',
+            images: [
+                { id: 'stage1Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/blow-step-01-concept-design.jpg?v=37', alt: 'Blow Moulding Concept & Design Stage' },
+                { id: 'stage2Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/blow-step-02-mould-development.jpg?v=37', alt: 'Blow Moulding Mould Development Stage' },
+                { id: 'stage3Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/blow-step-03-blow-moulding.jpg?v=37', alt: 'Blow Moulding Production Stage' },
+                { id: 'stage4Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/blow-step-04-finishing-assembly.jpg?v=37', alt: 'Blow Moulding Finishing & Assembly Stage' },
+                { id: 'stage5Img', src: 'website-assets/10-Homepage-Hero-About-Workflow/blow-step-05-finished-products.jpg?v=37', alt: 'Blow Moulding Finished Products Stage' }
+            ]
+        }
+    };
 
-        let isExpanded = false;
+    function switchTech(tech) {
+        if (!data[tech]) return;
 
-        function setExpandedState(expand, shouldScroll = false) {
-            isExpanded = expand;
-            wrapper.classList.toggle('is-expanded', isExpanded);
+        tabInjection.classList.toggle('active', tech === 'injection');
+        tabInjection.setAttribute('aria-selected', tech === 'injection' ? 'true' : 'false');
+        tabBlow.classList.toggle('active', tech === 'blow');
+        tabBlow.setAttribute('aria-selected', tech === 'blow' ? 'true' : 'false');
 
-            if (toggleBtn) {
-                toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-                const toggleText = toggleBtn.querySelector('.toggle-text');
-                const toggleIcon = toggleBtn.querySelector('.toggle-icon');
-                if (toggleText) {
-                    toggleText.textContent = isExpanded ? 'Collapse into Deck' : 'Explore All 5 Stages';
-                }
-                if (toggleIcon) {
-                    toggleIcon.textContent = isExpanded ? '✕' : '✦';
-                }
-            }
-
-            deck.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-
-            if (!isExpanded && shouldScroll) {
-                const headerOffset = 90;
-                const elementPosition = wrapper.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + (window.scrollY || window.pageYOffset) - headerOffset;
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
+        const stage3Title = document.getElementById('stage3Title');
+        if (stage3Title) {
+            stage3Title.textContent = data[tech].stage3Title;
         }
 
-        // 1. Toggle Button
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setExpandedState(!isExpanded, isExpanded);
-            });
-        }
-
-        // 2. Hint pill click also toggles
-        if (hint) {
-            hint.style.cursor = 'pointer';
-            hint.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setExpandedState(!isExpanded, isExpanded);
-            });
-        }
-
-        // 3. Card click handles expansion / collapse
-        const cards = deck.querySelectorAll('.workflow-stage-card');
-        cards.forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isExpanded) {
-                    setExpandedState(true);
-                } else {
-                    setExpandedState(false, true);
-                }
-            });
-
-            card.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setExpandedState(!isExpanded, isExpanded);
-                }
-            });
-        });
-
-        // 4. Deck container click when collapsed expands
-        deck.addEventListener('click', (e) => {
-            if (!isExpanded) {
-                e.preventDefault();
-                setExpandedState(true);
+        data[tech].images.forEach(item => {
+            const img = document.getElementById(item.id);
+            if (img) {
+                img.classList.add('switching');
+                setTimeout(() => {
+                    img.src = item.src;
+                    img.alt = item.alt;
+                    img.classList.remove('switching');
+                }, 150);
             }
         });
+    }
+
+    tabInjection.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTech('injection');
+    });
+
+    tabBlow.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTech('blow');
     });
 }
 
